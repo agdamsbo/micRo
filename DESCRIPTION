@@ -1,0 +1,24 @@
+Package: micRo
+Type: Package
+Title: Handle micro data masking
+Version: 0.1.0
+Authors@R: 
+    person("Andreas Gammelgaard", "Damsbo", , "agdamsbo@clin.au.dk", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7559-1154"))
+Description: This package is an extension to gtsummary functions, to handle
+    Masking of micro data from Danish health registries. Initially supports
+    summary tables and risk/event tables for survival analysis. Includes functions
+    and coding examples, that will help extend the applications.
+Suggests: 
+    pak,
+    renv,
+    roxygen2,
+    styler
+Imports:
+    gtsummary,
+    dplyr,
+    purrr,
+    usethis
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
