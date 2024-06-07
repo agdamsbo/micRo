@@ -22,3 +22,5 @@ Imports:
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/agdamsbo/micRo
+BugReports: https://github.com/agdamsbo/micRo/issues
