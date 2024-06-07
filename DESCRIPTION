@@ -1,7 +1,7 @@
 Package: micRo
 Type: Package
 Title: Handle micro data masking
-Version: 0.1.0
+Version: 2024.6.0
 Authors@R: 
     person("Andreas Gammelgaard", "Damsbo", , "agdamsbo@clin.au.dk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7559-1154"))
@@ -10,8 +10,10 @@ Description: This package is an extension to gtsummary functions, to handle
     summary tables and risk/event tables for survival analysis. Includes functions
     and coding examples, that will help extend the applications.
 Suggests: 
+    knitr,
     pak,
     renv,
+    rmarkdown,
     roxygen2,
     styler
 Imports:
@@ -22,5 +24,6 @@ Imports:
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/agdamsbo/micRo
+URL: https://github.com/agdamsbo/micRo, https://agdamsbo.github.io/micRo/
 BugReports: https://github.com/agdamsbo/micRo/issues
+VignetteBuilder: knitr

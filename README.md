@@ -2,6 +2,7 @@
 # micRo
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/agdamsbo/micRo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/agdamsbo/micRo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of micRo is to easy the handling and export of micro data from health registries and other data bases for researchers.

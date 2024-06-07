@@ -1,0 +1,23 @@
+---
+title: "Survival data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Survival data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(micRo)
+```
+
+Plotting survival data in a classical way with a survival plot (Kaplan-Meyer and others) may be considered as micro data due to each step representing an individual event and thereby micro data. Based on the discussion in this [GitHub issue thread](https://github.com/pharmaverse/ggsurvfit/issues/164), here are some working examples as to creating smoothed survival plots.
+
+
