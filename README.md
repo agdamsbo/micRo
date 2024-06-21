@@ -11,6 +11,9 @@ The goal of micRo is to easy the handling and export of micro data from health r
 
 I will take no responsibility for the use of these provided tools, as the results should always be thoroughly checked to live up to the export criteria.
 
+Still, thorough testing and documentation including examples are missing. Do not use these functions just yet.
+
+
 ## Installation
 
 You can install the development version of micRo like so:
@@ -26,7 +29,6 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(micRo)
-## basic example code
 ```
 
 ## Code of Conduct

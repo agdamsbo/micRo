@@ -12,18 +12,24 @@ Description: This package is an extension to gtsummary functions, to handle
 Suggests: 
     knitr,
     pak,
-    renv,
     rmarkdown,
     roxygen2,
-    styler
+    styler,
+    testthat (>= 3.0.0),
+    digest
 Imports:
     gtsummary,
     dplyr,
     purrr,
-    usethis
+    plyr,
+    glue,
+    tibble,
+    tidyselect
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/agdamsbo/micRo, https://agdamsbo.github.io/micRo/
 BugReports: https://github.com/agdamsbo/micRo/issues
 VignetteBuilder: knitr
+RoxygenNote: 7.3.1
+Config/testthat/edition: 3
