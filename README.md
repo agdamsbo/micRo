@@ -3,6 +3,9 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/agdamsbo/micRo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/agdamsbo/micRo/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![rhub](https://github.com/agdamsbo/micRo/actions/workflows/rhub.yaml/badge.svg)](https://github.com/agdamsbo/micRo/actions/workflows/rhub.yaml)
+[![pkgdown](https://github.com/agdamsbo/micRo/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/agdamsbo/micRo/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
 The goal of micRo is to easy the handling and export of micro data from health registries and other data bases for researchers.
