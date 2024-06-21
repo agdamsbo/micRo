@@ -56,7 +56,7 @@ testthat::test_that("masks missings", {
     tbl |>
       dplyr::filter(variable == "age", row_type == "missing") |>
       dplyr::select(tidyselect::starts_with("stat")),
-    structure(list(stat_1 = "<10 (<10.2%)", stat_2 = "<5 (<4.9%)"), row.names = c(
+    structure(list(stat_1 = "<10", stat_2 = "<5"), row.names = c(
       NA,
       -1L
     ), class = c("tbl_df", "tbl", "data.frame"))
@@ -76,10 +76,10 @@ testthat::test_that("masks overall", {
     tbl |>
       dplyr::select(stat_0) |> dput(),
     structure(list(stat_0 = c(
-      "47 (38, 57)", "<12 (<6%)", "0.64 (0.22, 1.39)",
-      "<12 (<6%)", NA, "53 (27%)", "54 (27%)", "43 (22%)", "50 (25%)",
-      NA, "68 (34%)", "68 (34%)", "64 (32%)", "61 (32%)", "<12 (<6%)",
-      "112 (56%)", "22.4 (16.0, 24.0)"
+      "47 (38, 57)", "<24", "0.64 (0.22, 1.39)",
+      "<24", NA, "53 (27%)", "54 (27%)", "43 (22%)", "50 (25%)", NA,
+      "68 (34%)", "68 (34%)", "64 (32%)", "61 (32%)", "<24", "112 (56%)",
+      "22.4 (16.0, 24.0)"
     )), row.names = c(NA, -17L), class = c(
       "tbl_df",
       "tbl", "data.frame"

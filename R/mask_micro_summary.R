@@ -245,7 +245,7 @@ add_missing_stats <- function(data,glue.mask= "{N_miss} ({round(p_miss*100,dec)}
     )
 }
 
-variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",dec=dec) {
+variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",glue.mask.missing="<{n}",dec=dec) {
   index.var <- unique(data$table_body$variable)[index]
 
   table_body <- data$table_body |>
@@ -324,7 +324,7 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",dec=de
         purrr::pluck(index) |>
         dplyr::select(N_obs),
       cut.off=cut.off,
-      glue.mask=glue.mask
+      glue.mask=glue.mask.missing
     )
 
     if ("stat_0" %in% names(missings)) {
@@ -350,8 +350,8 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",dec=de
                 dplyr::select(N_obs) |>
                 dplyr::slice(1) |>
                 unlist(use.names = FALSE),
-              cut.off=cut.off,
-              glue.mask=glue.mask,
+              cut.off=cut.off*2,
+              glue.mask=glue.mask.missing,
               dec=dec)
 
     }
