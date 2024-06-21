@@ -1,6 +1,6 @@
 Package: micRo
 Type: Package
-Title: Handle micro data masking
+Title: Micro Data Masking
 Version: 2024.6.0
 Authors@R: 
     person("Andreas Gammelgaard", "Damsbo", , "agdamsbo@clin.au.dk", role = c("aut", "cre"),

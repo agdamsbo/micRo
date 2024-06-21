@@ -2,9 +2,9 @@ spelling::update_wordlist()
 
 devtools::check()
 
-rhub::rhub_check(platforms = c("linux","macos","macos-arm64","windows"))
-
 devtools::check_win_devel()
+
+rhub::rhub_check(platforms = c("linux","macos","macos-arm64","windows"))
 
 devtools::release()
 

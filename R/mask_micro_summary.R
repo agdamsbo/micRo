@@ -12,6 +12,13 @@ utils::globalVariables(c( "N", "N_miss", "N_obs", "col_name", "n", "row_type", "
 #' ls <- gtsummary::trial |> gtsummary::tbl_summary(by=trt)
 #' ls |> mask_micro_summary()
 mask_micro_summary <- function(data,micro.n=5){
+  message("Please remember always to double-check kyour tables before exporting.")
+
+  if ("n" %in% names(data$table_body) & "missing" %in% data$table_body$row_type) {
+    message("You have included an 'n' column as well as counting missings.
+            Please make sure you are not exposing micro data.")
+  }
+
   data |>
     gtsummary::modify_table_body(
       ~ .x |> summary_masks(ls=data,cut.off = micro.n,dec=1)
@@ -244,7 +251,6 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",dec=de
   table_body <- data$table_body |>
     dplyr::filter(variable == index.var)
 
-
   ## Filtering bu two different approaches
   if (table_body$var_type[1] %in% c("dichotomous", "categorical")) {
     if (any(grepl("^stat_[1-9]|[1-9]\\d",names(table_body)))){
@@ -344,7 +350,7 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",dec=de
                 dplyr::select(N_obs) |>
                 dplyr::slice(1) |>
                 unlist(use.names = FALSE),
-              cut.off=cut.off*2,
+              cut.off=cut.off,
               glue.mask=glue.mask,
               dec=dec)
 
@@ -354,10 +360,6 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",dec=de
       out |>
         dplyr::filter(row_type != "missing"),
       missings)
-
-
-
-
 
   }
 
