@@ -22,9 +22,27 @@
     <loc>https://agdamsbo.github.io/micRo/index.html</loc>
   </url>
   <url>
-    <loc>https://agdamsbo.github.io/micRo/reference/hello.html</loc>
+    <loc>https://agdamsbo.github.io/micRo/reference/column_diffs.html</loc>
   </url>
   <url>
     <loc>https://agdamsbo.github.io/micRo/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://agdamsbo.github.io/micRo/reference/mask_micro_summary.html</loc>
+  </url>
+  <url>
+    <loc>https://agdamsbo.github.io/micRo/reference/mask_micro_table.html</loc>
+  </url>
+  <url>
+    <loc>https://agdamsbo.github.io/micRo/reference/masking.html</loc>
+  </url>
+  <url>
+    <loc>https://agdamsbo.github.io/micRo/reference/minimal_mask.html</loc>
+  </url>
+  <url>
+    <loc>https://agdamsbo.github.io/micRo/reference/rounded_interval.html</loc>
+  </url>
+  <url>
+    <loc>https://agdamsbo.github.io/micRo/reference/summary_masks.html</loc>
   </url>
 </urlset>
