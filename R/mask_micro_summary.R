@@ -262,27 +262,49 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",glue.m
 
   ## Filtering bu two different approaches
   if (table_body$var_type[1] %in% c("dichotomous", "categorical")) {
-    if (any(grepl("^stat_[1-9]|[1-9]\\d",names(table_body)))){
-      masked <- micro_n_masks(
-        ## Handling nominal/binary
+    # browser()
 
-        body = table_body |>
-          dplyr::filter(row_type!="missing"),
-        n.all = data$meta_data$df_stats |>
-          purrr::pluck(index) |>
-          dplyr::select(n),
-        N.all=data$meta_data$df_stats |>
-          purrr::pluck(index) |>
-          dplyr::select(N),
-        cut.off=cut.off,
-        glue.mask = glue.mask
-      )
+    if (!"stat_0" %in% names(names(table_body))){
+      if (any(grepl("^stat_[1-9]|[1-9]\\d",names(table_body)))){
+        masked <- micro_n_masks(
+          ## Handling nominal/binary
+
+          body = table_body |>
+            dplyr::filter(row_type!="missing"),
+          n.all = data$meta_data$df_stats |>
+            purrr::pluck(index) |>
+            dplyr::select(n),
+          N.all=data$meta_data$df_stats |>
+            purrr::pluck(index) |>
+            dplyr::select(N),
+          cut.off=cut.off,
+          glue.mask = glue.mask,
+          minimal = TRUE
+        )
+      } else {
+        masked <- table_body |> dplyr::filter(row_type!="missing")
+      }
+
     } else {
-      masked <- table_body |> dplyr::filter(row_type!="missing")
-    }
+      if (any(grepl("^stat_[1-9]|[1-9]\\d",names(table_body)))){
+        masked <- micro_n_masks(
+          ## Handling nominal/binary
 
+          body = table_body |>
+            dplyr::filter(row_type!="missing"),
+          n.all = data$meta_data$df_stats |>
+            purrr::pluck(index) |>
+            dplyr::select(n),
+          N.all=data$meta_data$df_stats |>
+            purrr::pluck(index) |>
+            dplyr::select(N),
+          cut.off=cut.off,
+          glue.mask = glue.mask
+        )
+      } else {
+        masked <- table_body |> dplyr::filter(row_type!="missing")
+      }
 
-    if ("stat_0" %in% names(masked)){
       body <-  masked
       tb  <-  body |> dplyr::filter(row_type!="missing",!is.na(stat_0))
       f1  <-  grep("^stat_0", names(tb))
