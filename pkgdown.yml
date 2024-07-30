@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   survival_data: survival_data.html
-last_built: 2024-07-30T13:51Z
+last_built: 2024-07-30T13:59Z
 urls:
   reference: https://agdamsbo.github.io/micRo/reference
   article: https://agdamsbo.github.io/micRo/articles
