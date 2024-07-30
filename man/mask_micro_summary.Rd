@@ -20,4 +20,5 @@ Mask micro data in gtsummary::tbl_summary() tables
 \examples{
 ls <- gtsummary::trial |> gtsummary::tbl_summary(by=trt)
 ls |> mask_micro_summary()
+ls |> gtsummary::add_overall() |> mask_micro_summary()
 }

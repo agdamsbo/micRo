@@ -52,11 +52,16 @@ testthat::test_that("masks missings", {
     mask_micro_summary() |>
     purrr::pluck("table_body")
 
+  # tbl |>
+  #   dplyr::filter(variable == "age", row_type == "missing") |>
+  #   dplyr::select(tidyselect::starts_with("stat")) |>
+  #   dput()
+
   testthat::expect_equal(
     tbl |>
       dplyr::filter(variable == "age", row_type == "missing") |>
       dplyr::select(tidyselect::starts_with("stat")),
-    structure(list(stat_1 = "<10", stat_2 = "<5"), row.names = c(
+    structure(list(stat_1 = "7", stat_2 = "<5"), row.names = c(
       NA,
       -1L
     ), class = c("tbl_df", "tbl", "data.frame"))
@@ -74,7 +79,7 @@ testthat::test_that("masks overall", {
 
   testthat::expect_equal(
     tbl |>
-      dplyr::select(stat_0) |> dput(),
+      dplyr::select(stat_0),
     structure(list(stat_0 = c(
       "47 (38, 57)", "<24", "0.64 (0.22, 1.39)",
       "<24", NA, "53 (27%)", "54 (27%)", "43 (22%)", "50 (25%)", NA,

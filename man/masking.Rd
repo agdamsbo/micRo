@@ -12,7 +12,8 @@ masking(
   Ns,
   cut.off = cut.off,
   glue.mask = glue.mask,
-  dec = dec
+  dec = dec,
+  minimal = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ masking(
 \item{glue.mask}{glue string for masking}
 
 \item{dec}{decimals}
+
+\item{minimal}{flag to mask minimally if no overall column is present}
 }
 \value{
 tibble

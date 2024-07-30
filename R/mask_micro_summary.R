@@ -11,8 +11,9 @@ utils::globalVariables(c( "N", "N_miss", "N_obs", "col_name", "n", "row_type", "
 #' @examples
 #' ls <- gtsummary::trial |> gtsummary::tbl_summary(by=trt)
 #' ls |> mask_micro_summary()
+#' ls |> gtsummary::add_overall() |> mask_micro_summary()
 mask_micro_summary <- function(data,micro.n=5){
-  message("Please remember always to double-check kyour tables before exporting.")
+  message("Please remember always to double-check your tables before exporting.")
 
   if ("n" %in% names(data$table_body) & "missing" %in% data$table_body$row_type) {
     message("You have included an 'n' column as well as counting missings.
@@ -51,6 +52,7 @@ summary_masks <- function(body,ls,cut.off=5,dec=dec){
 #' @param cut.off micro cut point
 #' @param glue.mask glue string for masking
 #' @param dec decimals
+#' @param minimal flag to mask minimally if no overall column is present
 #'
 #' @return tibble
 masking <- function(body,
@@ -60,9 +62,11 @@ masking <- function(body,
                     Ns,
                     cut.off=cut.off,
                     glue.mask=glue.mask,
-                    dec=dec
+                    dec=dec,
+                    minimal=FALSE
 ){
 
+  # browser(skipCalls = 1)
   if (is.null(tb)) tb <- body
 
   ## Logical matrix of relevant ns to mask
@@ -88,7 +92,7 @@ masking <- function(body,
         ds <- tb[.i, ]
         # Creating masked matrix to record maskings
         masked <- matrix(FALSE, ncol = ncol(f2))
-
+        # browser()
         # Only modify in case of low, handle one col matrices
         if (apply(f2, 1, any)[.i]) {
           n <- cut.off
@@ -101,23 +105,28 @@ masking <- function(body,
             tibble::as_tibble(.name_repair = "unique_quiet")
           masked[f2[.i,]] <- TRUE
 
-          ## loop to add masks until satisfied
-          while (sum(masked)==1 & # The case of only one low
-                 nrow(masked)>1 | # But ignored in case of ncol==1
-                 sum(ns[.i,][masked]) <= cut.off &
-                 (sum(masked) + n0[.i]) < ncol(masked)) {
-            # in the case that sum of smalls is below cutoff, another field is added.
+          if (!minimal){ # only run if minimal is not TRUE
+            ## loop to add masks until satisfied
+            while (sum(masked)==1 & # The case of only one low
+                   nrow(masked)>1 | # But ignored in case of ncol==1
+                   sum(ns[.i,][masked]) <= cut.off &
+                   (sum(masked) + n0[.i]) < ncol(masked)
+            ) {
+              # in the case that sum of smalls is below cutoff, another field is added.
 
-            ranked <- apply(ns[.i,], 1, rank, ties.method = "first") |> t()
+              ranked <- apply(ns[.i,], 1, rank, ties.method = "first") |> t()
 
-            ranked.i <- ranked == sum(masked) + n0[.i] + 1
-            n <- ns[.i,][ranked.i] |> plyr::round_any(accuracy = cut.off, f = ceiling)
-            N <- Ns[ranked.i]
-            p <- round(100 * n / N, dec)
+              ranked.i <- ranked == sum(masked) + n0[.i] + 1
+              n <- ns[.i,][ranked.i] |> plyr::round_any(accuracy = cut.off, f = ceiling)
+              N <- Ns[ranked.i]
+              p <- round(100 * n / N, dec)
 
-            ds[f1[ranked.i]] <- glue::glue(glue.mask)
-            masked[ranked.i] <- TRUE
-          }}
+              ds[f1[ranked.i]] <- glue::glue(glue.mask)
+              masked[ranked.i] <- TRUE
+            }
+
+          }
+          }
 
         list(
           ds = ds,
@@ -302,7 +311,6 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",glue.m
                         glue.mask=glue.mask,
                         dec=dec)
     }
-
     out <- rbind(
       masked,
       table_body |> dplyr::filter(row_type=="missing"))
@@ -314,20 +322,33 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",glue.m
   if ("missing" %in% out$row_type) {
     ## Handling missings n is N_miss, and N is N_obs
 
-    missings <- micro_n_masks(
-      body = out |>
-        dplyr::filter(row_type == "missing"),
-      n.all = data$meta_data$df_stats |>
-        purrr::pluck(index) |>
-        dplyr::select(N_miss),
-      N.all=data$meta_data$df_stats |>
-        purrr::pluck(index) |>
-        dplyr::select(N_obs),
-      cut.off=cut.off,
-      glue.mask=glue.mask.missing
-    )
-
-    if ("stat_0" %in% names(missings)) {
+    if (!"stat_0" %in% names(out)){
+      missings <- micro_n_masks(
+        body = out |>
+          dplyr::filter(row_type == "missing"),
+        n.all = data$meta_data$df_stats |>
+          purrr::pluck(index) |>
+          dplyr::select(N_miss),
+        N.all=data$meta_data$df_stats |>
+          purrr::pluck(index) |>
+          dplyr::select(N_obs),
+        cut.off=cut.off,
+        glue.mask=glue.mask.missing,
+        minimal=TRUE
+      )
+    } else {
+      missings <- micro_n_masks(
+        body = out |>
+          dplyr::filter(row_type == "missing"),
+        n.all = data$meta_data$df_stats |>
+          purrr::pluck(index) |>
+          dplyr::select(N_miss),
+        N.all=data$meta_data$df_stats |>
+          purrr::pluck(index) |>
+          dplyr::select(N_obs),
+        cut.off=cut.off,
+        glue.mask=glue.mask.missing
+      )
       ## Handling overall column
       body  <-  missings
       tb <-  body |> dplyr::filter(row_type=="missing")
@@ -366,7 +387,7 @@ variable_masks <- function(index, data, cut.off,glue.mask= "<{n} (<{p}%)",glue.m
   out
 }
 
-micro_n_masks <- function(body, n.all, N.all, cut.off, glue.mask,dec=1) {
+micro_n_masks <- function(body, n.all, N.all, cut.off, glue.mask,dec=1,minimal=FALSE) {
   if (nrow(body) > 1) {
     # First row removed in case of categorical
     # Possibly change to include in filter, to have whole df, or just rbind in the end
@@ -377,6 +398,7 @@ micro_n_masks <- function(body, n.all, N.all, cut.off, glue.mask,dec=1) {
 
   ## Supports any number of stat columns (overkill!)
   f1 <-  grep("^stat_[1-9]|[1-9]\\d", names(tb))
+
 
   masking(body=body,
           tb=tb,
@@ -391,7 +413,43 @@ micro_n_masks <- function(body, n.all, N.all, cut.off, glue.mask,dec=1) {
             unlist(use.names = FALSE),
           cut.off=cut.off,
           glue.mask=glue.mask,
-          dec=dec
+          dec=dec,
+          minimal=minimal
   )
+
+  # if ("stat_0" %in% names(tb)){
+  #   out <- masking(body=body,
+  #                  tb=tb,
+  #                  f1 = f1,
+  #                  ns=n.all |>
+  #                    dplyr::slice(seq_len(length(f1) * nrow(tb))) |>
+  #                    unlist(use.names = FALSE) |>
+  #                    matrix(ncol = length(f1), byrow = TRUE) |>
+  #                    tibble::as_tibble(.name_repair = "unique_quiet"),
+  #                  Ns=N.all |>
+  #                    dplyr::slice(seq_len(length(f1))) |>
+  #                    unlist(use.names = FALSE),
+  #                  cut.off=cut.off,
+  #                  glue.mask=glue.mask,
+  #                  dec=dec
+  #   )
+  # } else {
+  #   out <- tb |>
+  #     dplyr::mutate(
+  #     dplyr::across(f1,function(.x){
+  #       num <- as.numeric(.x)
+  #       if (num<cut.off){
+  #         n <- plyr::round_any(x = .x,
+  #                              accuracy = cut.off,
+  #                              f = ceiling)
+  #         glue::glue(glue.mask)
+  #       } else {
+  #         .x
+  #       }
+  #     })
+  #   )
+  # }
+  #
+  # out
 
 }
